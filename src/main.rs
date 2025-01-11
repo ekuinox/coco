@@ -13,7 +13,8 @@ const VERSION: &str = formatcp!(
 #[derive(Parser)]
 #[clap(version = VERSION)]
 pub struct Args {
-    pub path: Option<PathBuf>,
+    #[clap(default_value = ".env")]
+    pub path: PathBuf,
 
     #[clap(short, long, default_value = "toml")]
     pub output_format: OutputFormat,
@@ -31,8 +32,6 @@ fn main() {
         path,
         output_format,
     } = Args::parse();
-
-    let path = path.unwrap_or_else(|| ".env".into());
 
     let env_text = std::fs::read_to_string(&path).expect("Failed to open .env");
     let envs = parse_dotenv(&env_text).expect("Failed to parse .env");
