@@ -1,9 +1,17 @@
 use std::path::PathBuf;
 
 use clap::{Parser, ValueEnum};
+use const_format::{formatcp, str_index};
 use dotenv_parser::parse_dotenv;
 
+const VERSION: &str = formatcp!(
+    "{} ({})",
+    env!("CARGO_PKG_VERSION"),
+    str_index!(env!("VERGEN_GIT_SHA"), 0..8),
+);
+
 #[derive(Parser)]
+#[clap(version = VERSION)]
 pub struct Args {
     pub path: Option<PathBuf>,
 
